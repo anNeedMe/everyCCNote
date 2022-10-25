@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "src/uploadFile.h"
 #include <assert.h>
+#include <stdlib.h>
+#include <string.h>
 
 // int main()
 // {
@@ -234,12 +236,66 @@ void menu()
     printf("---------------------------");
 }
 
+int calc_fun(int (*pfun)(int, int))
+{
+    int a = 3;
+    int b = 2;
+    return pfun(a, b);
+}
+
+int arr_cmp(const void* e1, const void* e2)
+{
+    return *(int*)e1 - *(int*)e2;
+}
+
+void test()
+{
+    int arr[] = {54, 2, 13, 75, 88, 43, 3, 4, 9};
+    int len = sizeof(arr) / sizeof(arr[0]);
+    qsort(arr, len, sizeof(arr[0]), arr_cmp);
+
+
+    int i = 0;
+    for (i = 0; i < len; i++)
+    {
+        printf("%d\n", arr[i]);
+    }
+    
+}
+
+struct studys
+{
+    char names[20];
+    int age;
+};
+
+int struts_cmp(const void * e1, const void * e2)
+{
+    return ((struct studys *)e1)->age - ((struct studys *) e2)->age;
+}
+
+void test1()
+{
+    struct studys s[] = {{"zhangsan", 21},{"lisi", 18},{"wangwu", 23}};
+    int len = sizeof(s) / sizeof(s[0]);
+    qsort(s, len, sizeof(s[0]), struts_cmp);
+}
+
+
 int main()
 {
+
+    // 使用 c 库函数 qsort 进行排序
+    // test();
+    test1();
+
+    // 回调函数， 传入函数指针， 进行回调
+    int res = calc_fun(sub);
+    printf("%d\n", res);
     // int input = 0;
     // menu();
 
-    scanf("请输入两个数值>");
+    // scanf("请输入两个数值>");
 
     // do
     // {
@@ -247,12 +303,23 @@ int main()
     // } while ();
     
 
-    int arrss[5];
-    //整形数组
+    int arrss[5] = {0};
+    //数组指针
     int (*p1)[5] = &arrss;
+
+    int k = 0;
+    for (k = 0; k < 5; k++)
+    {
+        printf("%d \n", p1[0][k]);
+    }
+    
+    /*
+     * &arrss 这是首数组的 地址， 也就是数组的第一个元素地址；
+     */
+    int (*pp2)[5] = &arrss;
     
     // 整形 "指针的数组", 存放着指针, int类型的指针
-    int *arr12[5];
+    int * arr12[5];
     int* (*p2)[5] = &arr12;
     
     //函数指针数组 的指针
@@ -260,8 +327,7 @@ int main()
     // 1.函数指针(*p3)(int, int)
     // 2.数组 (*p3)[5]
     // 3.的指针 (* (*p3)[5])
-    int (*(*p3)[5])(int, int) = &p2;
-
+    int (*(*p3)[5])(int, int);
 
 
 
